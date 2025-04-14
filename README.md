@@ -33,7 +33,7 @@ public async Task UntilAssertedAsync_ShouldEventuallySucceed()
         value = 42;
     });
 
-    await WaitForIt
+    await FluentWait
         .Await(TimeSpan.FromSeconds(1))
         .PollInterval(TimeSpan.FromMilliseconds(100))
         .UntilAssertedAsync(() =>

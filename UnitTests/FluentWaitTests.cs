@@ -1,17 +1,17 @@
 using Shouldly;
-using static WaitForIt.WaitForIt;
+using WaitForIt;
 using static Xunit.TestContext;
 
 namespace UnitTests;
 
-public class WaitForItTests()
+public class FluentWaitTests()
 {
     readonly TimeSpan _200Milliseconds = TimeSpan.FromMilliseconds(200);
 
     [Fact]
     public async Task UntilAsserted_ShouldSucceed()
     {
-        await Await()
+        await FluentWait.Await()
             .PollInterval(TimeSpan.FromMilliseconds(100))
             .UntilAsserted(() => true.ShouldBeTrue());
     }
@@ -19,7 +19,7 @@ public class WaitForItTests()
     [Fact]
     public async Task UntilAssertedAsync_ShouldSucceed()
     {
-        await Await()
+        await FluentWait.Await()
             .PollInterval(TimeSpan.FromMilliseconds(100))
             .UntilAssertedAsync(async () =>
             {
@@ -32,7 +32,7 @@ public class WaitForItTests()
     public async Task UntilAssertedAsync_WhenOperationTimesOut_ShouldThrow()
     {
         var timeoutException = await Should.ThrowAsync<TimeoutException>(async () =>
-            await Await(_200Milliseconds)
+            await FluentWait.Await(_200Milliseconds)
                 .UntilAssertedAsync(async () =>
                 {
                     await Task.Delay(50, Current.CancellationToken);
@@ -46,7 +46,7 @@ public class WaitForItTests()
     public async Task UntilAsserted_WhenOperationTimesOut_ShouldThrow()
     {
         var timeoutException = await Should.ThrowAsync<TimeoutException>(async () =>
-            await Await(_200Milliseconds)
+            await FluentWait.Await(_200Milliseconds)
                 .UntilAsserted(() => { false.ShouldBeTrue(); })
         );
 
@@ -59,7 +59,7 @@ public class WaitForItTests()
         var attemptCount = 0;
 
         var timeoutException = await Should.ThrowAsync<TimeoutException>(async () =>
-            await Await(TimeSpan.FromMilliseconds(150))
+            await FluentWait.Await(TimeSpan.FromMilliseconds(150))
                 .PollInterval(TimeSpan.FromMilliseconds(50))
                 .UntilAssertedAsync(async () =>
                 {
@@ -80,7 +80,7 @@ public class WaitForItTests()
         var attemptCount = 0;
 
         var timeoutException = await Should.ThrowAsync<TimeoutException>(async () =>
-            await Await(TimeSpan.FromMilliseconds(150))
+            await FluentWait.Await(TimeSpan.FromMilliseconds(150))
                 .PollInterval(TimeSpan.FromMilliseconds(50))
                 .UntilAsserted(() =>
                 {
@@ -98,7 +98,7 @@ public class WaitForItTests()
     public async Task UntilAsserted_WhenSuccessWithinTimeout_ShouldSucceed()
     {
         var attemptCount = 0;
-        await Await(TimeSpan.FromSeconds(1))
+        await FluentWait.Await(TimeSpan.FromSeconds(1))
             .PollInterval(TimeSpan.FromMilliseconds(100))
             .UntilAsserted(() =>
             {

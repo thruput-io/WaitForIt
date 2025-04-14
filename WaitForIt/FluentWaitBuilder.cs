@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace WaitForIt;
 
-public class WaitForItExpression
+public class FluentWaitBuilder
 {
     TimeSpan _timeout;
     TimeSpan _pollInterval = TimeSpan.FromMilliseconds(100);
@@ -10,29 +10,29 @@ public class WaitForItExpression
     Action<Exception>? _logException;
     string _timeoutMessage = Defaults.TimeoutMessage;
 
-    internal WaitForItExpression()
+    internal FluentWaitBuilder()
     {
     }
 
-    public WaitForItExpression AtMost(TimeSpan timeout)
+    public FluentWaitBuilder AtMost(TimeSpan timeout)
     {
         _timeout = timeout;
         return this;
     }
 
-    public WaitForItExpression PollInterval(TimeSpan pollInterval)
+    public FluentWaitBuilder PollInterval(TimeSpan pollInterval)
     {
         _pollInterval = pollInterval;
         return this;
     }
 
-    public WaitForItExpression WithTimeoutMessage(string timeoutMessage)
+    public FluentWaitBuilder WithTimeoutMessage(string timeoutMessage)
     {
         _timeoutMessage = timeoutMessage;
         return this;
     }
 
-    public WaitForItExpression WithCancellation(CancellationToken cancellationToken)
+    public FluentWaitBuilder WithCancellation(CancellationToken cancellationToken)
     {
         _cancellationToken = cancellationToken;
         return this;
