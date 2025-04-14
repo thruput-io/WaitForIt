@@ -38,34 +38,13 @@ public class FluentWaitBuilder
         return this;
     }
 
-
     public async Task UntilAssertedAsync(Func<Task> assertion)
     {
-        var sw = Stopwatch.StartNew();
-        Exception? lastException = null;
-
-        while (sw.Elapsed < _timeout)
+        await UntilAssertedAsync<object?>(async () =>
         {
-            if (_cancellationToken.IsCancellationRequested)
-                throw new TaskCanceledException();
-
-            try
-            {
-                await assertion();
-                return;
-            }
-            catch (Exception ex)
-            {
-                lastException = ex;
-                _logException?.Invoke(ex);
-            }
-
-            await Task.Delay(_pollInterval, _cancellationToken);
-        }
-
-        throw new TimeoutException(
-            $"Assertion did not pass within {_timeout.TotalSeconds} seconds. Last exception: {lastException?.Message}",
-            lastException);
+            await assertion();
+            return Task.CompletedTask;
+        });
     }
 
     public async Task<T> UntilAssertedAsync<T>(Func<Task<T>> assertion)
@@ -98,32 +77,13 @@ public class FluentWaitBuilder
 
     public async Task UntilAsserted(Action assertion)
     {
-        var sw = Stopwatch.StartNew();
-        Exception? lastException = null;
-
-        while (sw.Elapsed < _timeout)
+        await UntilAsserted<object?>(() =>
         {
-            if (_cancellationToken.IsCancellationRequested)
-                throw new TaskCanceledException();
-
-            try
-            {
-                assertion();
-                return;
-            }
-            catch (Exception? ex)
-            {
-                lastException = ex;
-                _logException?.Invoke(ex);
-            }
-
-            await Task.Delay(_pollInterval, _cancellationToken);
-        }
-
-        throw new TimeoutException(
-            $"{_timeoutMessage}. Last exception: {lastException?.Message}",
-            lastException);
+            assertion();
+            return Task.CompletedTask;
+        });
     }
+
     public async Task<T> UntilAsserted<T>(Func<T> assertion)
     {
         var sw = Stopwatch.StartNew();
