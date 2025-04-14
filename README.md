@@ -1,7 +1,7 @@
 # WaitForIt ⏳
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Build](https://img.shields.io/github/actions/workflow/status/your-org/waitforit/build.yml?label=build)](https://github.com/your-org/waitforit/actions)
+[![Build](https://img.shields.io/github/actions/workflow/status/your-org/waitforit/build.yml?label=build)](https://github.com/thruput-io/WaitForIt/actions)
 [![NuGet](https://img.shields.io/nuget/v/WaitForIt.svg)](https://www.nuget.org/packages/WaitForIt/)
 [![Coverage](https://img.shields.io/codecov/c/github/your-org/waitforit)](https://codecov.io/gh/your-org/waitforit)
 
