@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         
         <PackageId>WaitForIt</PackageId>
-        <Version>1.0.0</Version>
+        <Version>0.0.1</Version>
         <Authors>Martin Blomster, Johan Granlund, Jonas Lundblad</Authors>
         <Company>Thruput</Company>
         <Description>A fluent, time-bound, assertion-based waiting library for .NET</Description>
