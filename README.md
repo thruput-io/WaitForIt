@@ -27,7 +27,6 @@ public async Task UntilAssertedAsync_ShouldEventuallySucceed()
 {
     int value = 0;
 
-    // Simulate background change
     _ = Task.Run(async () =>
     {
         await Task.Delay(300);
