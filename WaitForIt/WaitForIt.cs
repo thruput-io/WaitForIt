@@ -1,4 +1,4 @@
-namespace Lib;
+namespace WaitForIt;
 
 public static class WaitForIt
 {

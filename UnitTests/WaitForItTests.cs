@@ -1,5 +1,5 @@
 using Shouldly;
-using static Lib.WaitForIt;
+using static WaitForIt.WaitForIt;
 using static Xunit.TestContext;
 
 namespace UnitTests;
@@ -29,7 +29,7 @@ public class WaitForItTests()
     }
 
     [Fact]
-    public async Task UntilAssertedAsync_ShouldTimeOutAndThrow()
+    public async Task UntilAssertedAsync_WhenOperationTimesOut_ShouldThrow()
     {
         var timeoutException = await Should.ThrowAsync<TimeoutException>(async () =>
             await Await(_200Milliseconds)
@@ -43,7 +43,7 @@ public class WaitForItTests()
     }
 
     [Fact]
-    public async Task UntilAsserted_ShouldTimeOutAndThrow()
+    public async Task UntilAsserted_WhenOperationTimesOut_ShouldThrow()
     {
         var timeoutException = await Should.ThrowAsync<TimeoutException>(async () =>
             await Await(_200Milliseconds)
@@ -95,7 +95,7 @@ public class WaitForItTests()
     }
 
     [Fact]
-    public async Task UntilAsserted_InitialFailThenSuccess_ShouldSucceed()
+    public async Task UntilAsserted_WhenSuccessWithinTimeout_ShouldSucceed()
     {
         var attemptCount = 0;
         await Await(TimeSpan.FromSeconds(1))

@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Lib\Lib.csproj" />
+      <ProjectReference Include="..\WaitForIt\WaitForIt.csproj" />
     </ItemGroup>
 
 </Project>

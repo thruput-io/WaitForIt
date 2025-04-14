@@ -1,4 +1,4 @@
-namespace Lib;
+namespace WaitForIt;
 
 static class Defaults
 { 

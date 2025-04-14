@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace Lib;
+namespace WaitForIt;
 
 public class WaitForItExpression
 {
