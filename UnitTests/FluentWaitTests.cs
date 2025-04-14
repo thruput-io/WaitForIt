@@ -4,7 +4,7 @@ using static Xunit.TestContext;
 
 namespace UnitTests;
 
-public class FluentWaitTests()
+public class FluentWaitTests
 {
     readonly TimeSpan _200Milliseconds = TimeSpan.FromMilliseconds(200);
 
@@ -14,6 +14,19 @@ public class FluentWaitTests()
         await FluentWait.Await()
             .PollInterval(TimeSpan.FromMilliseconds(100))
             .UntilAsserted(() => true.ShouldBeTrue());
+    }
+    
+    [Fact]
+    public async Task UntilAsserted_WithReturn_ShouldSucceed()
+    {
+        var result = await FluentWait.Await()
+            .PollInterval(TimeSpan.FromMilliseconds(100))
+            .UntilAsserted(() =>
+            {
+                "value".ShouldBe("value");
+                return "value";
+            });
+        result.ShouldBe("value");
     }
 
     [Fact]
@@ -26,6 +39,32 @@ public class FluentWaitTests()
                 await Task.Delay(10, Current.CancellationToken);
                 true.ShouldBeTrue();
             });
+    }
+    [Fact]
+    public async Task UntilAssertedAsync_WithReturnValue_ShouldSucceed()
+    {
+        var result = await FluentWait.Await()
+            .PollInterval(TimeSpan.FromMilliseconds(100))
+            .UntilAssertedAsync(async () =>
+            {
+                await Task.Delay(10, Current.CancellationToken);
+                true.ShouldBeTrue();
+                return "value";
+            });
+        result.ShouldBe("value");
+    }
+    
+    [Fact]
+    public async Task UntilAssertedAsync_WithReturn_ShouldSucceed()
+    {
+        await FluentWait.Await()
+            .PollInterval(TimeSpan.FromMilliseconds(100))
+            .UntilAssertedAsync(async () =>
+            {
+                await Task.Delay(10, Current.CancellationToken);
+                true.ShouldBeTrue();
+            });
+        
     }
 
     [Fact]

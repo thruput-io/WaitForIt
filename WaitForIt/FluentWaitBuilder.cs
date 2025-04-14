@@ -68,6 +68,34 @@ public class FluentWaitBuilder
             lastException);
     }
 
+    public async Task<T> UntilAssertedAsync<T>(Func<Task<T>> assertion)
+    {
+        var sw = Stopwatch.StartNew();
+        Exception? lastException = null;
+
+        while (sw.Elapsed < _timeout)
+        {
+            if (_cancellationToken.IsCancellationRequested)
+                throw new TaskCanceledException();
+
+            try
+            {
+                return await assertion();
+            }
+            catch (Exception ex)
+            {
+                lastException = ex;
+                _logException?.Invoke(ex);
+            }
+
+            await Task.Delay(_pollInterval, _cancellationToken);
+        }
+
+        throw new TimeoutException(
+            $"Assertion did not pass within {_timeout.TotalSeconds} seconds. Last exception: {lastException?.Message}",
+            lastException);
+    }
+
     public async Task UntilAsserted(Action assertion)
     {
         var sw = Stopwatch.StartNew();
@@ -82,6 +110,33 @@ public class FluentWaitBuilder
             {
                 assertion();
                 return;
+            }
+            catch (Exception? ex)
+            {
+                lastException = ex;
+                _logException?.Invoke(ex);
+            }
+
+            await Task.Delay(_pollInterval, _cancellationToken);
+        }
+
+        throw new TimeoutException(
+            $"{_timeoutMessage}. Last exception: {lastException?.Message}",
+            lastException);
+    }
+    public async Task<T> UntilAsserted<T>(Func<T> assertion)
+    {
+        var sw = Stopwatch.StartNew();
+        Exception? lastException = null;
+
+        while (sw.Elapsed < _timeout)
+        {
+            if (_cancellationToken.IsCancellationRequested)
+                throw new TaskCanceledException();
+
+            try
+            {
+                return assertion();
             }
             catch (Exception? ex)
             {
